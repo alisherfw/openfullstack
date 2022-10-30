@@ -43,11 +43,16 @@ app.get('/notes/:id', (request, response) => {
 })
 
 app.post('/notes', (req, res) => {
+
+    if(!req.body.content) {
+        return res.status(304).json({ error: 'missing content' })
+    }
+
     const note = {
-        id: req.body.id,
+        id: notes.length + 1,
         content: req.body.content,
-        date: req.body.date,
-        important: req.body.important
+        date: new Date(),
+        important: req.body.important || false
     }
 
     notes.push(note)
