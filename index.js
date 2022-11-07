@@ -1,38 +1,24 @@
 const express = require('express')
+const mongoose = require('mongoose')
+const Note = require('./modules/note')
 const app = express()
 const morgan = require('morgan')
 
+require('dotenv').config()
 app.use(express.json())
-
 app.use(morgan('dev'))
 
-let notes = [
-    {
-      id: 1,
-      content: "HTML is nasty",
-      date: "2022-05-30T17:30:31.098Z",
-      important: true
-    },
-    {
-      id: 2,
-      content: "Browser can execute only Javascript",
-      date: "2022-05-30T18:39:34.091Z",
-      important: false
-    },
-    {
-      id: 3,
-      content: "GET and POST are the most important methods of HTTP protocol",
-      date: "2022-05-30T19:20:14.298Z",
-      important: true
-    }
-  ]
+const url = process.env.MONGODB
 
 app.get('/', (request, response) => {
     response.send('<h1>Some changes</h1>')
 })
 
 app.get('/notes', (request, response) => {
-    response.send(notes)
+    Note.find({})
+        .then(notes => {
+            response.json(notes)
+        })
 })
 
 app.get('/notes/:id', (request, response) => {

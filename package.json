@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/alisherfw/openfullstack#readme",
   "dependencies": {
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mongoose": "^6.7.1",
     "morgan": "^1.10.0"
   }
 }
