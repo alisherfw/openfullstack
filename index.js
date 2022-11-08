@@ -11,7 +11,7 @@ app.use(morgan('dev'))
 const url = "mongodb+srv://ali:Alisher2002@cluster0.8qjwzgm.mongodb.net/?retryWrites=true&w=majority"
 
 app.get('/', (request, response) => {
-    response.send('<h1>Some changes</h1>')
+    response.send('<a href="/"> notes </a>')
 })
 
 app.get('/notes', (request, response) => {
