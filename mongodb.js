@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 require('dotenv').config()
 
-const url = process.env.MONGODB
+const url = "mongodb+srv://ali:Alisher2002@cluster0.8qjwzgm.mongodb.net/?retryWrites=true&w=majority"
 
 const noteSchema = new mongoose.Schema({
     content: String,
