@@ -40,9 +40,25 @@ app.delete('/notes/:id', (request, response, next) => {
         .catch(err => next(err))
 })
 
+app.put('/notes/:id', (request, response, next) => {
+    const body = request.body
+
+    const note = {
+        content: body.content,
+        important: body.important
+    }
+
+    Note.findByIdAndUpdate(request.params.id, note, { new: true })
+        .then((updatedNote) => {
+            response.json(updatedNote)
+        })
+        .catch(err => next(err))
+
+})
+
 app.post('/notes', (req, res) => {
 
-    if (!req.body.content) {
+    if (!req.body.content || req.body.content === undefined) {
         return res.status(400).json({ error: 'missing content' })
     }
 
