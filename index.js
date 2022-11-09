@@ -20,13 +20,9 @@ app.get('/notes', (request, response) => {
 })
 
 app.get('/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const note = notes.find(note => note.id === id)
-    if(note) {
-        response.send(note)
-    } else {
-        response.status(404).send()
-    }
+    Note.findById(request.body.id).then(note => {
+        response.json(note)
+    })
 })
 
 app.post('/notes', (req, res) => {
