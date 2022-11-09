@@ -19,15 +19,30 @@ app.get('/notes', (request, response) => {
         })
 })
 
-app.get('/notes/:id', (request, response) => {
-    Note.findById(request.params.id).then(note => {
-        response.json(note)
-    })
+app.get('/notes/:id', (request, response, next) => {
+    Note.findById(request.params.id)
+        .then(note => {
+            if (note) {
+                response.json(note)
+            } else {
+                response.status(404).end()
+            }
+        })
+        .catch(err => next(err))
+})
+
+
+app.delete('/notes/:id', (request, response, next) => {
+    Note.findByIdAndDelete(request.params.id)
+        .then(result => {
+            response.status(204).end()
+        })
+        .catch(err => next(err))
 })
 
 app.post('/notes', (req, res) => {
 
-    if(!req.body.content) {
+    if (!req.body.content) {
         return res.status(400).json({ error: 'missing content' })
     }
 
@@ -40,11 +55,14 @@ app.post('/notes', (req, res) => {
     note.save().then(savedNote => {
         res.json(savedNote)
     })
-
-    
 })
 
 
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({error: "unknown endpoint"})
+}
+
+app.use(unknownEndpoint)
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
