@@ -8,8 +8,6 @@ require('dotenv').config()
 app.use(express.json())
 app.use(morgan('dev'))
 
-const url = process.env.MONGODB_URI
-
 app.get('/', (request, response) => {
     response.send('<a href="/notes"> notes </a>')
 })
@@ -27,25 +25,26 @@ app.get('/notes/:id', (request, response) => {
     if(note) {
         response.send(note)
     } else {
-        response.status(404).send();
+        response.status(404).send()
     }
 })
 
 app.post('/notes', (req, res) => {
 
     if(!req.body.content) {
-        return res.status(304).json({ error: 'missing content' })
+        return res.status(400).json({ error: 'missing content' })
     }
 
-    const note = {
-        id: notes.length + 1,
+    const note = new Note({
         content: req.body.content,
         date: new Date(),
         important: req.body.important || false
-    }
+    })
 
-    notes.push(note)
-    res.status(200).send('succeed!')
+    note.save().then(savedNote => {
+        res.json(savedNote)
+    })
+
     
 })
 

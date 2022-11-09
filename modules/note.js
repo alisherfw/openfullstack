@@ -7,10 +7,10 @@ console.log('connecting to database...')
 
 mongoose.connect(url)
     .then((result) => {
-        console.log('connection established: ', url)
+        console.log('connection established to MongoDB ')
     })
     .catch((err) => {
-        console.log('Failed to connect:', err)
+        console.log('Failed to connect MongoDB: ', err)
     })
 
 const notesSchema = new mongoose.Schema({
