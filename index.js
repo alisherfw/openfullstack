@@ -20,7 +20,7 @@ app.get('/notes', (request, response) => {
 })
 
 app.get('/notes/:id', (request, response) => {
-    Note.findById(request.body.id).then(note => {
+    Note.findById(request.params.id).then(note => {
         response.json(note)
     })
 })
