@@ -1,11 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const Note = require('./modules/note')
-const User = require('./modules/user')
 const app = express()
 const morgan = require('morgan')
-const bcrypt = require('bcrypt')
-
 
 require('dotenv').config()
 app.use(express.json())
@@ -33,14 +30,6 @@ app.get('/notes/:id', (request, response, next) => {
         })
         .catch(err => next(err))
 })
-
-app.get('/users', (request, response) => {
-    User.find({})
-        .then(users => {
-            response.json(users)
-        })
-})
-
 
 
 app.delete('/notes/:id', (request, response, next) => {
@@ -84,27 +73,6 @@ app.post('/notes', (req, res) => {
     })
 })
 
-app.post('/users', async (req, res) => {
-    if(!req.body.username || !req.body.password) {
-        return res.status(400).json({error: 'missing content'})
-    } 
-
-    const {username, name, password} = req.body
-
-    const saltRounds = 10
-    const passwordHash = await bcrypt.hash(password, saltRounds)
-
-    const user = new User({
-        username, 
-        name, 
-        passwordHash
-    })
-
-    user.save().then(savedUser => {
-        res.json(savedUser)
-    })
-
-})
 
 const unknownEndpoint = (req, res) => {
     res.status(404).send({error: "unknown endpoint"})
